@@ -37,7 +37,6 @@ namespace BoxingAndUnboxing
             for (var i = 0; i < _n; i++)
             {
                 str = (str + toStringFunc(i)).GetHashCode().ToString();
-                Console.WriteLine(str);
             }
             
             return str;
