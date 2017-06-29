@@ -1,49 +1,58 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace BoxingAndUnboxing
 {
     public class StringsTester
     {
         private readonly int _n;
-        private const string DefaultResult = "DONE";
-
+        
         public StringsTester(int n)
         {
             _n = n;
+            ConsoleHelper.WriteHeader("StringTester");
         }
 
-        public string ToStringWithBoxing() => TestString(ToStringWithBoxing);
-
-        public string ToStringWithoutBoxing() => TestString(ToString);
-
-        public string ToStringArrayWithoutBoxing() => TestStringArray(ToString);
-
-        public string ToStringArrayWithBoxing() => TestStringArray(ToStringWithBoxing);
-
-        private string TestStringArray(Func<int, string> toStringFunc)
+        public string TestString(bool useBoxing)
         {
-            var strings = new string[_n];
-            for (var i = 0; i < _n; i++)
-            {
-                strings[i] = toStringFunc(i);
-            }
+            var toStringFunc = ToStringHelpers.GetToStringFunction(useBoxing);
             
-            return DefaultResult;
-        }
-
-        private string TestString(Func<int, string> toStringFunc)
-        {
             var str = string.Empty; 
             for (var i = 0; i < _n; i++)
             {
-                str = (str + toStringFunc(i)).GetHashCode().ToString();
+                str = " " + toStringFunc(i);
             }
             
             return str;
         }
 
-        private string ToStringWithBoxing(int x) => ((Object) x).ToString();
-        
-        private string ToString(int x) => x.ToString();
+        public string TestStringArray(bool useBoxing)
+        {
+            var toStringFunc = ToStringHelpers.GetToStringFunction(useBoxing);
+
+            var strings = new List<string>();
+            for (var i = 0; i < _n; i++)
+            {
+                strings.Add(" " + toStringFunc(i));
+            }
+
+            return strings.Count.ToString();
+        }
+
+        public string TestStringStream(bool useBoxing)
+        {
+            var toStringFunc = ToStringHelpers.GetToStringFunction(useBoxing);
+
+            using (var ms = new MemoryStream())
+            using (var stream = new StreamWriter(ms))
+            {
+                for (var i = 0; i < _n; i++)
+                {
+                    stream.Write(" " + toStringFunc(i));
+                }
+
+                return ms.Length.ToString();
+            }
+        }
     }
 }

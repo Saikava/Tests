@@ -3,5 +3,6 @@ The solution with tests, which I hope will help me to understand CLR and C# bett
 
 ## BoxingAndUnboxing project
 ### StringTester.cs
-I don't understand why where is difference between execution time of ToStringArrayWithoutBoxing and ToStringArrayWithBoxing, 
-but no difference between execution time of ToStringWithBoxing and ToStringWithoutBoxing.
+Seems like there is no any difference in performance if ToString executed with boxing or without boxing.
+### ArrayTester.cs
+There is a strange difference in execution time of TestStringArrayWtihConcat and TestStringArrayWtihoutConcat.
